@@ -1,0 +1,1 @@
+/usr/bin/clang++ -g -Xlinker --dependency-file=CMakeFiles/searchtoofast.dir/link.d CMakeFiles/searchtoofast.dir/src/main.cpp.o CMakeFiles/searchtoofast.dir/src/indexer.cpp.o -o bin/searchtoofast
