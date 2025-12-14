@@ -1,3 +1,0 @@
-/home/t0kkaaa/projects/searchtoofast/build/CMakeFiles/searchtoofast.dir
-/home/t0kkaaa/projects/searchtoofast/build/CMakeFiles/edit_cache.dir
-/home/t0kkaaa/projects/searchtoofast/build/CMakeFiles/rebuild_cache.dir
