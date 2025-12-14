@@ -40,6 +40,13 @@
 # debug information files
 *.dwo
 
-# Build folder
+# Build directories
+build/
+bin/
+lib/
+*.o
+*.so
+*.a
+*.dylib# Build folder
 build
 .cache
