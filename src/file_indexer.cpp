@@ -51,7 +51,7 @@ void FileIndexer::request_folder_content(const std::filesystem::path &p) {
             }
             std::cout << std::endl;
         }
-        std::cout << std::endl;
+        std::cout << "Lines indexed: " << file.file_content.size() << std::endl;
     }
 
 }
@@ -71,6 +71,70 @@ std::list<std::string> FileIndexer::tokenize_line(std::string line) {
 
     return tokenized_line;
 }
+
+bool FileIndexer::is_binary(const std::filesystem::path& filepath,
+                         size_t max_check) {
+    std::ifstream file(filepath, std::ios::binary);
+    if (!file.is_open()) return false; // Can't read, assume text to be safe
+
+    char buffer[1024];
+    size_t bytes_to_check = std::min(max_check, static_cast<size_t>(1024));
+    file.read(buffer, bytes_to_check);
+    size_t bytes_read = file.gcount();
+
+    // The GNU grep algorithm: binary if ANY null byte in first 1KB
+    // (Except for UTF-16/32 with BOM, which we check first)
+
+    // Check for UTF BOMs
+    if (bytes_read >= 2) {
+        // UTF-16 LE BOM
+        if (buffer[0] == '\xFF' && buffer[1] == '\xFE') {
+            // UTF-16 with BOM - check if it's valid text
+            return !is_valid_utf16(buffer, bytes_read, true);
+        }
+        // UTF-16 BE BOM
+        if (buffer[0] == '\xFE' && buffer[1] == '\xFF') {
+            return !is_valid_utf16(buffer, bytes_read, false);
+        }
+    }
+
+    // UTF-8 BOM
+    if (bytes_read >= 3) {
+        if (buffer[0] == '\xEF' && buffer[1] == '\xBB' && buffer[2] == '\xBF') {
+            return false; // UTF-8 with BOM is text
+        }
+    }
+
+    // Standard null-byte detection
+    return std::any_of(buffer, buffer + bytes_read,
+                          [](char c) { return c == 0; });
+}
+
+bool FileIndexer::is_valid_utf16(const char* data, size_t len, bool is_little_endian) {
+        // Simplified UTF-16 validation
+        // In practice, you'd want a more complete check
+        if (len % 2 != 0) return false;
+
+        for (size_t i = 0; i < len; i += 2) {
+            uint16_t codepoint;
+            if (is_little_endian) {
+                codepoint = static_cast<uint8_t>(data[i]) |
+                           (static_cast<uint8_t>(data[i+1]) << 8);
+            } else {
+                codepoint = (static_cast<uint8_t>(data[i]) << 8) |
+                            static_cast<uint8_t>(data[i+1]);
+            }
+
+            // Check for invalid UTF-16 ranges
+            if (codepoint >= 0xD800 && codepoint <= 0xDFFF) {
+                // Surrogate pair - check if properly paired
+                if (codepoint >= 0xDC00) return false; // Low surrogate without high
+                i += 2; // Skip next char (should be low surrogate)
+                if (i >= len) return false;
+            }
+        }
+        return true;
+    }
 
 std::set<std::list<std::string>> FileIndexer::read_and_tokenize_file(const std::filesystem::path& p) {
     if (!std::filesystem::exists(p))
