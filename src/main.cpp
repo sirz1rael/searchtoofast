@@ -8,4 +8,5 @@ int main(int argc, char* argv[]) {
     }
 
     Indexer i ((std::filesystem::path(argv[1])));
+    
 }
