@@ -1,4 +1,4 @@
-# SearchToolFast ⚡
+# SearchTooFast ⚡
 
 > A high-performance, modular C++20 file search tool with professional architecture
 
@@ -113,36 +113,6 @@ int main() {
 }
 ```
 
-## 📁 Project Structure
-
-```
-searchtoofast/
-├── include/
-│   ├── searchtoofast.hpp              # Main public API
-│   ├── models/
-│   │   └── search_result.hpp          # Data structures
-│   └── core/
-│       ├── indexer/
-│       │   ├── file_indexer.hpp
-│       │   └── directory_indexer.hpp
-│       ├── file_detection/
-│       │   └── file_detector.hpp
-│       └── search/
-│           └── search_engine.hpp
-├── src/
-│   ├── main.cpp                       # CLI application
-│   ├── searchtoofast.cpp              # API implementation
-│   └── core/
-│       ├── indexer/
-│       ├── file_detection/
-│       └── search/
-├── tests/                             # Unit tests (ready for implementation)
-├── CMakeLists.txt
-├── README.md
-├── RESTRUCTURING.md
-└── LICENSE
-```
-
 ## 🔧 Building with Options
 
 ### Debug Build
@@ -165,7 +135,7 @@ make
 
 ## 📊 Performance
 
-SearchToolFast is optimized for performance:
+SearchTooFast is optimized for performance:
 
 - **Static regex compilation** - Compiled once, reused for all lines
 - **Efficient path handling** - Minimal string copies
@@ -193,7 +163,7 @@ Then update `CMakeLists.txt` to include test targets.
 
 ## 🚦 API Reference
 
-### SearchToolFast
+### SearchTooFast
 
 ```cpp
 namespace searchtoofast {
