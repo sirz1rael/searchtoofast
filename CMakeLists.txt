@@ -17,6 +17,25 @@ list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
 include_directories(${PROJECT_SOURCE_DIR}/include)
 
-add_executable(${PROJECT_NAME} src/main.cpp src/directory_indexer.cpp src/file_indexer.cpp)
+# Core components
+set(CORE_SOURCES
+    src/core/indexer/file_indexer.cpp
+    src/core/indexer/directory_indexer.cpp
+    src/core/file_detection/file_detector.cpp
+    src/core/search/search_engine.cpp
+    src/searchtoofast.cpp
+)
+
+# Main executable
+add_executable(${PROJECT_NAME}
+    ${CORE_SOURCES}
+    src/main.cpp
+)
 
 target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_SOURCE_DIR}/include)
+
+# Optional: Test target
+if(BUILD_TESTS)
+    enable_testing()
+    # Tests will be added here
+endif()

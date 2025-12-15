@@ -1,25 +1,39 @@
-#include "core/file_indexer.hpp"
+#include "searchtoofast.hpp"
 #include <filesystem>
 #include <iostream>
-#include <memory>
 #include <string>
 
 int main(int argc, char* argv[]) {
     if (argc < 4) {
+        std::cerr << "Usage: " << argv[0] << " <root_directory> <search_directory> <word_to_find>" << std::endl;
         std::cerr << "Too few arguments called: " << argc << std::endl;
         return 1;
     }
 
-    auto file_indexer = std::make_unique<FileIndexer>(std::filesystem::path(std::string(argv[1])));
-    file_indexer->request_folder_content(std::filesystem::path(std::string(argv[2])));
-    auto res = file_indexer->find_word_in_files(std::string(argv[3]));
+    try {
+        // Initialize searcher with root directory
+        searchtoofast::SearchTooFast searcher(std::filesystem::path{argv[1]});
 
-    if(res.empty()) {
-        std::cout << "Word not found in any file." << std::endl;
+        // Index the specified directory
+        searcher.index_directory(std::filesystem::path{argv[2]});
+
+        // Search for the word
+        auto results = searcher.search(std::string{argv[3]});
+
+        if (results.empty()) {
+            std::cout << "Word not found in any file." << std::endl;
+            return 0;
+        }
+
+        for (const auto& result : results) {
+            std::cout << "Word '" << result.word << "' found in file: " << result.file_path
+                      << "\nIn line: '" << result.line_content << "'"
+                      << " with line number: " << result.line_number << "\n" << std::endl;
+        }
+
         return 0;
+    } catch (const std::exception& e) {
+        std::cerr << "Error: " << e.what() << std::endl;
+        return 1;
     }
-    for (const auto& file : res) {
-        std::cout << "Word '" << file.word << "' found in file: " << file.file_path << "\nIn line: '" << file.line_content << "'" << " with line number: " << file.line_number << "\n" << std::endl;
-    }
-    return 0;
 }
