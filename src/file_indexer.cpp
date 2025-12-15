@@ -136,27 +136,52 @@ bool FileIndexer::is_valid_utf16(const char* data, size_t len, bool is_little_en
         return true;
     }
 
-std::set<std::list<std::string>> FileIndexer::read_and_tokenize_file(const std::filesystem::path& p) {
+std::list<std::list<std::string>> FileIndexer::read_and_tokenize_file(const std::filesystem::path& p) {
     if (!std::filesystem::exists(p))
         throw std::runtime_error("File does not exists: " + p.string());
-
     if (!std::filesystem::is_regular_file(p))
         throw std::runtime_error("Not a regular file: " + p.string());
-
     auto file_size = std::filesystem::file_size(p);
     if (file_size == 0) return {};
+    if (is_binary(p, 1024)) return {}; // don't try to tokenize binary files
 
     std::ifstream file(p);
     if (!file.is_open()) {
         throw std::runtime_error("Cannot open file: " + p.string());
     }
-
-    std::set<std::list<std::string>> lines;
     std::string line;
+    std::list<std::list<std::string>> lines; // preserves insertion order
 
     while (std::getline(file, line)) {
-        lines.insert(this->tokenize_line(line));
+        lines.push_back(this->tokenize_line(line));
     }
 
     return lines;
+}
+
+std::list<FileIndexer::word_found_result> FileIndexer::find_word_in_files(const std::string &word) {
+    std::list<word_found_result> results;
+
+    for (const auto& file : files) {
+        for (const auto& line_tokens : file.file_content) {
+            for (const auto& token : line_tokens) {
+                if (token == word) {
+                    auto it = std::find(file.file_content.begin(), file.file_content.end(), line_tokens);
+                    auto line_number = std::distance(file.file_content.begin(), it) + 1;
+
+                    results.push_back({word, static_cast<int>(line_number),
+                        std::accumulate(
+                            std::next(line_tokens.begin()),
+                            line_tokens.end(), line_tokens.front(),
+                            [](std::string a, const std::string& b) {
+                                return a + " " + b;
+                            }
+                        ),
+                        file.file_path.string()});
+                }
+            }
+        }
+    }
+
+    return results;
 }

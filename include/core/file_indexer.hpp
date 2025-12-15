@@ -8,7 +8,7 @@
 class FileIndexer {
 private:
     struct File{
-        std::set<std::list<std::string>> file_content;
+        std::list<std::list<std::string>> file_content;
         std::filesystem::path file_path;
 
         bool operator<(const File& other) const {
@@ -17,11 +17,19 @@ private:
             return file_content != other.file_content;
         }
     };
+
+    struct word_found_result {
+        std::string word;
+        int line_number;
+        std::string line_content;
+        std::string file_path;
+    };
+
     std::unique_ptr<DirectoryIndexer> directory_indexer;
 
     std::set<File> files = {};
 
-    std::set<std::list<std::string>> read_and_tokenize_file(const std::filesystem::path& p);
+    std::list<std::list<std::string>> read_and_tokenize_file(const std::filesystem::path& p);
     std::list<std::string> tokenize_line(std::string line);
     static bool is_binary(const std::filesystem::path& filepath,
                          size_t max_check = 1024);
@@ -29,6 +37,8 @@ private:
 public:
     FileIndexer(const std::filesystem::path &p);
     void request_folder_content(const std::filesystem::path &p);
+
+    std::list<word_found_result> find_word_in_files(const std::string &word);
 };
 
 #endif
