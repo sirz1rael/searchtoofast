@@ -278,10 +278,10 @@ For issues, questions, or suggestions, please open an issue on the project repos
 ## 🎯 Roadmap
 
 ### v1.0 (Current)
-- ✅ Basic file search functionality
-- ✅ Binary file detection
-- ✅ UTF-8 and UTF-16 support
-- ✅ Professional architecture
+- [x] Basic file search functionality
+- [x] Binary file detection
+- [x] UTF-8 and UTF-16 support
+- [x] Professional architecture
 
 ### v1.1 (Planned)
 - [ ] Inverted index implementation
