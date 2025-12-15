@@ -19,7 +19,7 @@ The project follows a layered architecture with clear separation of concerns:
 
 ```
 ┌─────────────────────────────────────┐
-│   SearchTooFast (Public API)       │
+│   SearchTooFast (Public API)        │
 ├─────────────────────────────────────┤
 │   SearchEngine (Orchestration)      │
 ├─────────────────────────────────────┤
