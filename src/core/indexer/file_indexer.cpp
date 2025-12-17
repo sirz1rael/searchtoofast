@@ -1,13 +1,12 @@
 #include "core/indexer/file_indexer.hpp"
 #include "core/file_detection/file_detector.hpp"
-#include <algorithm>
-#include <cctype>
+#include "utils/tokenizer.hpp"
 #include <filesystem>
 #include <fstream>
 #include <iostream>
-#include <regex>
 #include <stdexcept>
 #include <string>
+#include <vector>
 
 namespace searchtoofast::core {
 
@@ -56,41 +55,22 @@ void FileIndexer::request_folder_content(const std::filesystem::path &p) {
     }
 }
 
-std::list<std::string> FileIndexer::tokenize_line(const std::string& line) {
-    static const std::regex word_regex("[A-Za-z0-9]+"); // Compile once, reuse for all calls
-    std::list<std::string> tokenized_line;
-
-    auto words_begin = std::sregex_iterator(line.begin(), line.end(), word_regex);
-    auto words_end = std::sregex_iterator();
-
-    for (std::sregex_iterator it = words_begin; it != words_end; ++it) {
-        std::string data = it->str();
-        // Convert to lowercase in-place
-        for (auto& c : data) {
-            c = std::tolower(static_cast<unsigned char>(c));
-        }
-        tokenized_line.push_back(std::move(data));
-    }
-
-    return tokenized_line;
-}
-
-std::list<std::list<std::string>> FileIndexer::read_and_tokenize_file(const std::filesystem::path& p) {
+std::vector<std::vector<std::string>> FileIndexer::read_and_tokenize_file(const std::filesystem::path& p) {
     if (!std::filesystem::exists(p))
         throw std::runtime_error("File does not exists: " + p.string());
     if (!std::filesystem::is_regular_file(p))
         throw std::runtime_error("Not a regular file: " + p.string());
-    if (FileDetector::is_binary(p, 1024)) return {}; // don't try to tokenize binary files
+    if (FileDetector::is_binary(p, 1024)) return {{"Binary file", "Can't read", p}}; // don't try to tokenize binary files
 
     std::ifstream file(p);
     if (!file.is_open()) {
         throw std::runtime_error("Cannot open file: " + p.string());
     }
     std::string line;
-    std::list<std::list<std::string>> lines; // preserves insertion order
+    std::vector<std::vector<std::string>> lines; // preserves insertion order
 
     while (std::getline(file, line)) {
-        lines.push_back(this->tokenize_line(line));
+        lines.push_back(utils::Tokenizer::tokenize(line));
     }
 
     return lines;

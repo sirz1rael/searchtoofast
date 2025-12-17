@@ -1,5 +1,4 @@
 #include "core/search/search_engine.hpp"
-#include <algorithm>
 
 namespace searchtoofast::core {
 

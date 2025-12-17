@@ -4,7 +4,6 @@
 #include "core/indexer/directory_indexer.hpp"
 #include <filesystem>
 #include <memory>
-#include <list>
 #include <set>
 #include <string>
 
@@ -13,7 +12,7 @@ namespace searchtoofast::core {
 class FileIndexer {
 private:
     struct File {
-        std::list<std::list<std::string>> file_content;
+        std::vector<std::vector<std::string>> file_content;
         std::filesystem::path file_path;
 
         bool operator<(const File& other) const {
@@ -26,8 +25,7 @@ private:
     std::unique_ptr<DirectoryIndexer> directory_indexer;
     std::set<File> files = {};
 
-    std::list<std::list<std::string>> read_and_tokenize_file(const std::filesystem::path& p);
-    std::list<std::string> tokenize_line(const std::string& line);
+    std::vector<std::vector<std::string>> read_and_tokenize_file(const std::filesystem::path& p);
 
 public:
     FileIndexer(const std::filesystem::path &p);
