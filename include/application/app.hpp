@@ -18,7 +18,7 @@ private:
     App() = default;
     ~App() = default;
 public:
-    void init(const std::string& app_id);
+    void init(const std::string& app_id, const int& argc, char* argv[]);
     int run();
 
     const Glib::RefPtr<Gtk::Application>& get_application() const {

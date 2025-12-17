@@ -25,8 +25,10 @@ set(CORE_SOURCES
     src/core/search/search_engine.cpp
     src/searchtoofast.cpp
     src/utils/tokenizer.cpp
+    src/utils/json_helper.cpp
     src/application/window.cpp
     src/application/app.cpp
+    src/application/config/config.cpp
 )
 
 find_package(PkgConfig REQUIRED)
@@ -34,6 +36,8 @@ pkg_check_modules(GTKMM REQUIRED gtkmm-4.0)
 pkg_check_modules(GLIBMM REQUIRED glibmm-2.4)
 pkg_check_modules(SIGCMM REQUIRED sigc++-2.0)
 pkg_check_modules(PCOV QUIET libcov)
+
+find_package(Boost CONFIG REQUIRED COMPONENTS json)
 
 # Main executable
 add_executable(${PROJECT_NAME}
@@ -58,6 +62,7 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
     ${GTKMM_LIBRARIES}
     ${GLIBMM_LIBRARIES}
     ${SIGCMM_LIBRARIES}
+    ${Boost_LIBRARIES}
 )
 
 # Code coverage: apply flags and optional libcov linking after target exists
