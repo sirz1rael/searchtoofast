@@ -48,13 +48,13 @@ void DirectoryIndexer::index() {
             this->folder_content.insert({folder_path, tokenized_entry});
         }
 
-        for (const auto &[folder_path, tokens] : this->folder_content) {
-            std::cout << folder_path << " : ";
-            for (const auto &token : tokens) {
-                std::cout << token << ' ';
-            }
-            std::cout << std::endl;
-        }
+        // for (const auto &[folder_path, tokens] : this->folder_content) {
+        //     std::cout << folder_path << " : ";
+        //     for (const auto &token : tokens) {
+        //         std::cout << token << ' ';
+        //     }
+        //     std::cout << std::endl;
+        // }
         std::cout << "Folder entries size: " << folders_list.size() << std::endl;
     } catch (const std::filesystem::filesystem_error& e) {
         std::cerr << e.what() << std::endl;

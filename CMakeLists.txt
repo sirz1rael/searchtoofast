@@ -36,6 +36,7 @@ pkg_check_modules(GTKMM REQUIRED gtkmm-4.0)
 pkg_check_modules(GLIBMM REQUIRED glibmm-2.4)
 pkg_check_modules(SIGCMM REQUIRED sigc++-2.0)
 pkg_check_modules(PCOV QUIET libcov)
+pkg_check_modules(LIBADWAITA REQUIRED libadwaita-1)
 
 find_package(Boost CONFIG REQUIRED COMPONENTS json)
 
@@ -50,7 +51,11 @@ target_include_directories(${PROJECT_NAME} PRIVATE
     ${GTKMM_INCLUDE_DIRS}
     ${GLIBMM_INCLUDE_DIRS}
     ${SIGCMM_INCLUDE_DIRS}
+    ${LIBADWAITA_INCLUDE_DIRS}
 )
+
+link_directories(${GTKMM4_LIBRARY_DIRS} ${LIBADWAITA_LIBRARY_DIRS})
+add_definitions(${GTKMM4_CFLAGS_OTHER} ${LIBADWAITA_CFLAGS_OTHER})
 
 target_compile_options(${PROJECT_NAME} PRIVATE
     ${GTKMM_CFLAGS_OTHER}
@@ -63,6 +68,7 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
     ${GLIBMM_LIBRARIES}
     ${SIGCMM_LIBRARIES}
     ${Boost_LIBRARIES}
+    ${LIBADWAITA_LIBRARIES}
 )
 
 # Code coverage: apply flags and optional libcov linking after target exists

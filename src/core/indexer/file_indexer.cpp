@@ -21,15 +21,15 @@ void FileIndexer::request_folder_content(const std::filesystem::path &p) {
     std::cout << "\nContent of the path: " << p << ":" << std::endl;
     for (const auto& item : path_content) {
         // Build path more efficiently using filesystem::path operators
-        std::filesystem::path full_path;
+        std::filesystem::path full_path = "/";
         for (const auto& component : item) {
-            full_path /= component;
+             full_path /= component;
         }
 
         // Check directory status once
         bool is_dir = std::filesystem::is_directory(full_path);
         std::cout << "Path: " << full_path.string() << " = "
-                  << (is_dir ? "DIRECTORY" : "FILE") << std::endl;
+                   << (is_dir ? "DIRECTORY" : "FILE") << std::endl;
 
         // Only process files, not directories
         if (!is_dir) {
@@ -37,6 +37,11 @@ void FileIndexer::request_folder_content(const std::filesystem::path &p) {
             file.file_content = read_and_tokenize_file(full_path);
             file.file_path = full_path;
             this->files.insert(std::move(file)); // Move the file object
+
+            if (this->files.size() > 1500) {
+                std::cout << "Reached 10,000 files limit, stopping indexing." << std::endl;
+                break;
+            }
         }
     }
 

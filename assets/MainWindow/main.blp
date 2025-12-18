@@ -1,0 +1,58 @@
+using Gtk 4.0;
+using Adw 1;
+
+Adw.Window window {
+  default-width: 800;
+  default-height: 600;
+  title: _("Search Too Fast");
+
+  content: Adw.ToolbarView {
+    [top]
+    Adw.HeaderBar {
+      [end]
+      MenuButton   {
+        menu-model: menu_app;
+        icon-name: "open-menu-symbolic";
+        primary: true;
+      }
+    }
+
+    Box {
+        width-request: 750;
+        orientation: vertical;
+        spacing: 10;
+        halign: center;
+
+        SearchEntry search_entry {
+          placeholder-text: _("Let's search something!");
+          width-request: 350;
+          height-request: 40;
+        }
+        
+        ListBox list_box {
+          hexpand: true;
+          valign: start;
+          activate-on-single-click: true;
+          selection-mode: single;
+
+          styles [
+            "boxed-list",
+          ]
+        }
+      }
+  };
+}
+
+menu menu_app {
+  section {
+    item {
+      label: _("Keyboard Shortcuts");
+      action: "app.shortcuts";
+    }
+
+    item {
+      label: _("About My App");
+      action: "app.about";
+    }
+  }
+}

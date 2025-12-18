@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <requires lib="gtk" version="4.0"/>
+  <object class="AdwWindow" id="window">
+    <property name="default-width">800</property>
+    <property name="default-height">600</property>
+    <property name="title" translatable="yes">Search Too Fast</property>
+    <property name="content">
+      <object class="AdwToolbarView">
+        <child type="top">
+          <object class="AdwHeaderBar">
+            <!-- <child type="start">
+              <object class="GtkButton" id="close_button">
+                <property name="icon-name">window-close-symbolic</property>
+              </object>
+            </child> -->
+          </object>
+        </child>
+        <child>
+          <object class="GtkBox">
+            <property name="orientation">1</property>
+            <property name="spacing">10</property>
+            <child>
+              <object class="GtkSearchEntry" id="search_entry">
+                <property name="placeholder-text" translatable="yes">Let's search something!</property>
+                <property name="width-request">600</property>
+                <property name="height-request">40</property>
+                <property name="halign">0</property>
+                <property name="margin-start">10</property>
+                <property name="margin-top">10</property>
+                <property name="margin-end">10</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkScrolledWindow">
+                <property name="hexpand">true</property>
+                <property name="vexpand">true</property>
+                <property name="child">
+                  <object class="GtkListBox" id="results_list">
+                    <property name="selection-mode">0</property>
+                  </object>
+                </property>
+              </object>
+            </child>
+          </object>
+        </child>
+      </object>
+    </property>
+  </object>
+</interface>
