@@ -30,15 +30,9 @@ std::list<::searchtoofast::SearchResult> SearchEngine::find_word(const std::stri
 
             // If word is found, reconstruct line content and add result
             if (word_found && !line_tokens.empty()) {
-                std::string line_content;
-                bool first = true;
-                for (const auto& token : line_tokens) {
-                    if (!first) line_content += " ";
-                    line_content += token;
-                    first = false;
-                }
 
-                results.push_back({word, line_number, line_content, file_path_str});
+
+                results.push_back({word, line_number, line_tokens, file_path_str});
             }
 
             ++line_number;

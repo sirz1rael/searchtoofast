@@ -8,7 +8,9 @@
 #include <gtkmm/button.h>
 #include <gtkmm/menubutton.h>
 #include <gtkmm/listbox.h>
-
+#include <gtkmm/expander.h>
+#include <gtkmm/label.h>
+#include <gtkmm/combobox.h>
 namespace searchtoofast::app::window {
 
 class Window {
@@ -16,6 +18,9 @@ private:
     Gtk::Window* window_{nullptr};
     Gtk::SearchEntry* search_entry_{nullptr};
     Gtk::ListBox* results_list_{nullptr};
+
+
+
 
     searchtoofast::SearchTooFast search_engine;
 

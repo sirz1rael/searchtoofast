@@ -5,4 +5,6 @@ int main(int argc, char* argv[]) {
     app.init("com.t0kkaaa.searchtoofast", argc, argv);
 
     auto status = app.run();
+
+    return status;
 }

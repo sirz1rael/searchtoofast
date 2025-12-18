@@ -9,11 +9,6 @@
       <object class="AdwToolbarView">
         <child type="top">
           <object class="AdwHeaderBar">
-            <!-- <child type="start">
-              <object class="GtkButton" id="close_button">
-                <property name="icon-name">window-close-symbolic</property>
-              </object>
-            </child> -->
           </object>
         </child>
         <child>

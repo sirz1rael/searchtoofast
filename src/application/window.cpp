@@ -3,10 +3,11 @@
 #include <glibmm/error.h>
 #include <glib.h>
 #include <gtkmm/label.h>
+#include "application/essentails/result.hpp"
 
 namespace searchtoofast::app::window {
 
-Window::Window() : search_engine("/home/t0kkaaa/") {
+Window::Window() : search_engine("/home/t0kkaaa/projects") {
     auto builder = Gtk::Builder::create();
 
     try {
@@ -38,7 +39,7 @@ Window::Window() : search_engine("/home/t0kkaaa/") {
         builder->set_translation_domain("searchtoofast");
 
         // Index the project source code directory
-        search_engine.index_directory("/home/t0kkaaa/");
+        search_engine.index_directory("/home/t0kkaaa/projects");
 
 
     } catch (const Glib::Error& ex) {
@@ -80,9 +81,9 @@ void Window::update_results_list(const std::list<searchtoofast::SearchResult>& r
     // Add new results
     for (const auto& result : results) {
         g_message("Adding result: %s (line %d)", result.file_path.c_str(), result.line_number);
-        auto label = Gtk::make_managed<Gtk::Label>(result.file_path);
-        label->set_halign(Gtk::Align::START);
-        results_list_->append(*label);
+
+        auto result_box = Gtk::make_managed<searchtoofast::app::essentials::Result>(result);
+        results_list_->append(*result_box);
     }
 
     results_list_->show();
