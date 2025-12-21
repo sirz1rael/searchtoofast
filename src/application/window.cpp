@@ -58,8 +58,6 @@ void Window::on_search_changed() {
 }
 
 void Window::perform_search(const Glib::ustring& query) {
-    // Implement your search logic here
-    g_message("Performing search for: %s", query.c_str());
     auto results = this->search_engine.search(std::string(query));
     g_message("Found %lu results", results.size());
     update_results_list(results);
@@ -78,11 +76,17 @@ void Window::update_results_list(const std::list<searchtoofast::SearchResult>& r
         results_list_->remove(*child);
     }
 
-    // Add new results
-    for (const auto& result : results) {
-        g_message("Adding result: %s (line %d)", result.file_path.c_str(), result.line_number);
+    // Group results by file_path
+    std::map<std::string, std::list<searchtoofast::SearchResult>> grouped_results;
 
-        auto result_box = Gtk::make_managed<searchtoofast::app::essentials::Result>(result);
+    for (const auto& result : results) {
+        grouped_results[result.file_path].push_back(result);
+    }
+
+    // Add grouped results to list
+    for (const auto& [file_path, file_results] : grouped_results) {
+        auto result_box = Gtk::make_managed<searchtoofast::app::essentials::Result>(
+            file_path, file_results);
         results_list_->append(*result_box);
     }
 
@@ -95,16 +99,15 @@ void Window::set_title(const Glib::ustring& title) {
     }
 }
 
+void Window::set_size(const int& width, const int& height) {
+    if (window_) {
+        window_->set_default_size(width, height);
+    }
+}
+
 void Window::show() {
     if (window_) {
         window_->present();
     }
 }
-
-void Window::on_close_clicked() {
-    if (window_) {
-        window_->close();
-    }
-}
-
 } // namespace searchtoofast::app::window

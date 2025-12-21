@@ -36,6 +36,7 @@ public:
 
     Gtk::Window* get_window() const { return window_; }
     void set_title(const Glib::ustring& title);
+    void set_size(const int& width, const int& height);
     void show();
 };
 

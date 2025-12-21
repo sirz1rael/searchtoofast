@@ -2,9 +2,6 @@
 <interface>
   <requires lib="gtk" version="4.0"/>
   <object class="AdwWindow" id="window">
-    <property name="default-width">800</property>
-    <property name="default-height">600</property>
-    <property name="title" translatable="yes">Search Too Fast</property>
     <property name="content">
       <object class="AdwToolbarView">
         <child type="top">
@@ -16,14 +13,44 @@
             <property name="orientation">1</property>
             <property name="spacing">10</property>
             <child>
-              <object class="GtkSearchEntry" id="search_entry">
-                <property name="placeholder-text" translatable="yes">Let's search something!</property>
-                <property name="width-request">600</property>
-                <property name="height-request">40</property>
+              <object class="GtkBox">
+                <property name="orientation">0</property>
+                <property name="spacing">10</property>
                 <property name="halign">0</property>
                 <property name="margin-start">10</property>
                 <property name="margin-top">10</property>
                 <property name="margin-end">10</property>
+                <child>
+                  <object class="GtkSearchEntry" id="search_entry">
+                    <property name="placeholder-text" translatable="yes">Let's search something!</property>
+                    <property name="height-request">40</property>
+                    <property name="hexpand">true</property>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkBox">
+                    <property name="orientation">0</property>
+                    <property name="spacing">5</property>
+                    <child>
+                      <object class="GtkToggleButton" id="case_sensitive_button">
+                        <property name="icon-name">font-x-generic-symbolic</property>
+                        <property name="tooltip-text" translatable="yes">Enable case-sensitive search</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkToggleButton" id="full_word_button">
+                        <property name="icon-name">format-text-underline-symbolic</property>
+                        <property name="tooltip-text" translatable="yes">Match whole words only</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkToggleButton" id="use_regex_button">
+                        <property name="icon-name">tools-check-spelling-symbolic</property>
+                        <property name="tooltip-text" translatable="yes">Use regular expressions</property>
+                      </object>
+                    </child>
+                  </object>
+                </child>
               </object>
             </child>
             <child>
