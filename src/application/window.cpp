@@ -12,36 +12,26 @@ Window::Window() : search_engine("/home/t0kkaaa/projects") {
 
     try {
         // Load UI file
-        builder->add_from_file("/home/t0kkaaa/projects/searchtoofast/assets/MainWindow/main.ui");
-
+        builder->add_from_file("/home/t0kkaaa/projects/searchtoofast/assets/main.ui");
         // Get the root window from the UI file
-        auto window = builder->get_widget<Gtk::Window>("window");
-        auto search_entry = builder->get_widget<Gtk::SearchEntry>("search_entry");
-        auto results_list = builder->get_widget<Gtk::ListBox>("results_list");
-
-        window_ = window;
-        search_entry_ = search_entry;
-        results_list_ = results_list;
+        window_ = builder->get_widget<Gtk::Window>("window");
+        search_entry_ = builder->get_widget<Gtk::SearchEntry>("search_entry");
+        results_list_ = builder->get_widget<Gtk::ListBox>("results_list");
 
         if (!window_) {
             g_warning("Failed to load window from UI file");
             return;
         }
-
         // Connect signals
         if (search_entry_) {
             search_entry_->signal_search_changed().connect(
                 [this]() { on_search_changed(); }
             );
         }
-
         // Connect UI signal handlers
         builder->set_translation_domain("searchtoofast");
-
         // Index the project source code directory
         search_engine.index_directory("/home/t0kkaaa/projects");
-
-
     } catch (const Glib::Error& ex) {
         g_warning("Error loading UI file: %s", ex.what());
     }

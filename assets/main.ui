@@ -6,6 +6,12 @@
       <object class="AdwToolbarView">
         <child type="top">
           <object class="AdwHeaderBar">
+            <child type="end">
+              <object class="GtkButton" id="about">
+                <property name="halign">3</property>
+                <property name="icon-name">dialog-question-symbolic</property>
+              </object>
+            </child>
           </object>
         </child>
         <child>
